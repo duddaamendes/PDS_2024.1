@@ -7,6 +7,7 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
+import controle.ViagemDAO;
 import modelo.InfoViagem;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
@@ -38,6 +39,7 @@ public class EdicaoViagem extends JFrame {
 	private JTextField txtAtividades;
 	private JTextField txtOrcamento;
 	private JTextField txtDoc;
+
 
 	/**
 	 * Launch the application.
@@ -269,7 +271,9 @@ public class EdicaoViagem extends JFrame {
 				}
 				viagemSelecionada.setDoc(doc);
 				
-				janela.atualizarDadosViagem(viagemSelecionada);
+				ViagemDAO viagemDAO = new ViagemDAO();
+				viagemDAO.atualizarViagens(viagemSelecionada);
+				
 				dispose();
 			}
 		});

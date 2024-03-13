@@ -47,9 +47,31 @@ public class EnderecoDAO implements IEnderecoDAO {
 	@Override
 	public int inserirEndereco(Endereco end) {
 		
-		String SQL = "INSERT INTO endereco (cep, rua) VALUES (?,?)";
-		// TODO Auto-generated method stub
-		return 0;
+		String SQL = "INSERT INTO enderecos (rua) VALUES (?)";
+
+		Conexao con = Conexao.getInstacia();
+		Connection conBD = con.conectar();
+
+		int chavePrimariaGerada = Integer.MIN_VALUE;
+
+		try {
+			PreparedStatement ps = conBD.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+
+			ps.setString(1, end.getRua());
+
+			ResultSet rs = ps.executeQuery();
+			if (rs != null) {
+				chavePrimariaGerada = rs.getInt(1);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			con.fecharConexao();
+		}
+
+		return chavePrimariaGerada;
+
 	}
 
 	@Override

@@ -5,12 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import modelo.InfoViagem;
-import controle.Conexao;
 
 public class ViagemDAO implements IViagemDAO {
 	
@@ -35,8 +33,10 @@ public class ViagemDAO implements IViagemDAO {
 		Conexao con = Conexao.getInstacia();
 		Connection conBD = con.conectar();
 		
+		int chavePrimariaGerada = Integer.MIN_VALUE;
+		
 		try {
-			PreparedStatement ps = conBD.prepareStatement(SQL);
+			PreparedStatement ps = conBD.prepareStatement(SQL,Statement.RETURN_GENERATED_KEYS);
 			
 			LocalDate dataInicio = via.getDataInicio();
 			java.sql.Date sqlDataI = java.sql.Date.valueOf(dataInicio);
@@ -57,16 +57,22 @@ public class ViagemDAO implements IViagemDAO {
 			ps.setInt(8, orcamentoI);
 			ps.setString(9, via.getDoc());
 			
-			ps.executeUpdate();
+			int ra = ps.executeUpdate();
+			
+			if (ra > 0) {
+				ResultSet gk = ps.getGeneratedKeys();
+				if (gk.next()) {
+			        chavePrimariaGerada = gk.getInt(1);
+			    }
+			}
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			con.fecharConexao();
 		}
 		
-		return 0;
+		return chavePrimariaGerada;
 	}
 	
 	@Override
@@ -130,13 +136,21 @@ public class ViagemDAO implements IViagemDAO {
 				// TODO Auto-generated method stub
 				return viagens;
 	}
+	
+	/*
+	 * Tem que possuir a chave primária (ID, CPF, CEP, ETC.)
+	 */
 
 	@Override
 	public boolean atualizarViagens(InfoViagem via) {
-		String SQL = "UPDATE viagens SET nome=?, email=?, telefone=?, destino=?, dataInicio=?, dataTermino=?, atividades=?, orcamento=?, doc=?";
+		// Comando SQL  a ser executado
+		String SQL = "UPDATE viagens SET nome=?, email=?, telefone=?, destino=?, dataInicio=?, dataTermino=?, atividades=?, orcamento=?, doc=? WHERE doc=?";
 
+		// Abre conexão  e cria a "ponte de conexao" com MySQL
 		Conexao con = Conexao.getInstacia();
 		Connection conBD = con.conectar();
+		
+		int retorno=0;
 		
 		try {
 			PreparedStatement ps = conBD.prepareStatement(SQL);
@@ -144,7 +158,7 @@ public class ViagemDAO implements IViagemDAO {
 			LocalDate dataInicio = via.getDataInicio();
 			java.sql.Date sqlDataI = java.sql.Date.valueOf(dataInicio);
 			
-			LocalDate dataTermino = via.getDataInicio();
+			LocalDate dataTermino = via.getDataTermino();
 			java.sql.Date sqlDataT = java.sql.Date.valueOf(dataTermino);
 			
 			double orcamentoD = via.getOrcaomento();
@@ -160,13 +174,8 @@ public class ViagemDAO implements IViagemDAO {
 			ps.setInt(8, orcamentoI);
 			ps.setString(9, via.getDoc());
 			
-			int rowUpdate = ps.executeUpdate();
+			retorno = ps.executeUpdate();
 			
-			if (rowUpdate > 0) {
-				return true;
-			} else {
-				return false;
-			} 
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -175,7 +184,8 @@ public class ViagemDAO implements IViagemDAO {
 			con.fecharConexao();
 		}
 		
-		return false;
+		//IF Ternário: se o retorno for zero é pra considerar esse valor falso, senão é pra considerar verdadeiro 
+		return (retorno==0 ? false:true);
 	}
 
 	@Override

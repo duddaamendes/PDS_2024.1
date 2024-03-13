@@ -295,6 +295,12 @@ public class CadastroViagem extends JFrame {
 				ViagemDAO dao = new ViagemDAO();
 				int retorno = dao.inserirViagem(v);
 				
+				if(retorno == 0) {
+					// Janela de erro
+				} else {
+					// Janela de sucesso
+				}
+				
 				list.cadastrarViagem(v);
 				dispose();
 			}

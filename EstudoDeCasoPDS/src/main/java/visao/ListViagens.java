@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
 
+import controle.ViagemDAO;
 import modelo.InfoViagem;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JButton;
@@ -30,8 +31,12 @@ public class ListViagens extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	ArrayList <InfoViagem> listaViagens = new ArrayList<InfoViagem>();
 	private JTable table;
+	
+	ViagemDAO viagemDAO = ViagemDAO.getInstancia();
+	
+	ArrayList <InfoViagem> listaViagens = viagemDAO.listarViagens();
+
 
 	/**
 	 * Launch the application.
@@ -67,7 +72,7 @@ public class ListViagens extends JFrame {
 		contentPane.setLayout(new MigLayout("", "[][][][][grow][][][][][][][][]", "[][][][grow][][][][][][][][]"));
 		
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(ListViagens.class.getResource("/imgs/Logo100.png")));
+		lblNewLabel.setIcon(new ImageIcon());
 		contentPane.add(lblNewLabel, "flowx,cell 0 0 5 3,alignx right");
 		
 		JLabel label = new JLabel("Viagens cadastradas:");
@@ -181,6 +186,7 @@ public class ListViagens extends JFrame {
 		listaViagens.add(viagem);
 		
 		atualizarJTableModel();
+		viagemDAO.inserirViagem(viagem);
 	}
 	
 	static class RoundedBorder extends AbstractBorder {
