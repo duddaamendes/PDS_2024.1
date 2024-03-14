@@ -72,7 +72,7 @@ public class ListViagens extends JFrame {
 		contentPane.setLayout(new MigLayout("", "[][][][][grow][][][][][][][][]", "[][][][grow][][][][][][][][]"));
 		
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon());
+		lblNewLabel.setIcon(new ImageIcon(CadastroViagem.class.getResource("/imgs/Logo100.png")));
 		contentPane.add(lblNewLabel, "flowx,cell 0 0 5 3,alignx right");
 		
 		JLabel label = new JLabel("Viagens cadastradas:");
@@ -115,8 +115,8 @@ public class ListViagens extends JFrame {
 			}
 		});
 		btnSair.setFont(new Font("Calibri", Font.BOLD, 15));
-		btnSair.setIcon(new ImageIcon(CadastroViagem.class.getResource("/imgs/Vector.png")));
-		contentPane.add(btnSair, "cell 11 11");
+		btnSair.setIcon(new ImageIcon(EdicaoViagem.class.getResource("/imgs/Vector.png")));
+		contentPane.add(btnSair, "cell 9 11 3 1");
 		
 		JButton btnEditar = new JButton("Editar viagem");
 		final ListViagens estaJanela1 = this;
@@ -186,7 +186,6 @@ public class ListViagens extends JFrame {
 		listaViagens.add(viagem);
 		
 		atualizarJTableModel();
-		viagemDAO.inserirViagem(viagem);
 	}
 	
 	static class RoundedBorder extends AbstractBorder {
