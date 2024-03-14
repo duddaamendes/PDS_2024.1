@@ -10,7 +10,7 @@ public interface IViagemDAO {
 
 	public ArrayList<InfoViagem> listarViagens();
 
-	public boolean atualizarViagens(InfoViagem via);
+	public int atualizarViagens(InfoViagem via);
 
 	public boolean removerViagens(InfoViagem via);
 

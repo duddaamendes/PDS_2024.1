@@ -92,10 +92,9 @@ public class ViagemDAO implements IViagemDAO {
 					ResultSet rs = ps.executeQuery();
 					
 					while(rs.next()) {
-						//Criar objeto
-						InfoViagem end = new InfoViagem();
 						
 						//Pega os valores de cada coluna do registro
+						Integer idReserva = rs.getInt("id_Viagem");
 						String nome = rs.getString("nome");
 						String email = rs.getString("email");
 						String telefone = rs.getString("telefone");
@@ -110,8 +109,11 @@ public class ViagemDAO implements IViagemDAO {
 						//LocalTime
 						//LocalDateTime
 
+						//Cria objeto
+						InfoViagem end = new InfoViagem();
 						
 						//Seta os valores no obj java
+						end.setId(idReserva);
 						end.setNome(nome);
 						end.setEmial(email);
 						end.setTelefone(telefone);
@@ -142,9 +144,9 @@ public class ViagemDAO implements IViagemDAO {
 	 */
 
 	@Override
-	public boolean atualizarViagens(InfoViagem via) {
+	public int atualizarViagens(InfoViagem via) {
 		// Comando SQL  a ser executado
-		String SQL = "UPDATE viagens SET nome=?, email=?, telefone=?, destino=?, dataInicio=?, dataTermino=?, atividades=?, orcamento=?, doc=? WHERE doc=?";
+		String SQL = "UPDATE viagens SET nome=?, email=?, telefone=?, destino=?, dataInicio=?, dataTermino=?, atividades=?, orcamento=?, doc=? WHERE id_viagem=?";
 
 		// Abre conexão  e cria a "ponte de conexao" com MySQL
 		Conexao con = Conexao.getInstacia();
@@ -153,6 +155,7 @@ public class ViagemDAO implements IViagemDAO {
 		int retorno=0;
 		
 		try {
+			// Ta transformando em JDBC
 			PreparedStatement ps = conBD.prepareStatement(SQL);
 			
 			LocalDate dataInicio = via.getDataInicio();
@@ -173,6 +176,7 @@ public class ViagemDAO implements IViagemDAO {
 			ps.setString(7, via.getAtividades());
 			ps.setInt(8, orcamentoI);
 			ps.setString(9, via.getDoc());
+			ps.setInt(10, via.getId());
 			
 			retorno = ps.executeUpdate();
 			
@@ -185,27 +189,23 @@ public class ViagemDAO implements IViagemDAO {
 		}
 		
 		//IF Ternário: se o retorno for zero é pra considerar esse valor falso, senão é pra considerar verdadeiro 
-		return (retorno==0 ? false:true);
+		return retorno;
 	}
 
 	@Override
 	public boolean removerViagens(InfoViagem via) {
-		String SQL = "SELECT * FROM viagens WHERE id_viagem = ?";
+		String SQL = "DELETE FROM viagens WHERE id_viagem = ?";
 		
-		Conexao con = Conexao.getInstacia();
-		Connection conBD = con.conectar();
+		Conexao con = Conexao.getInstacia(); //instancia
+		Connection conBD = con.conectar(); // cria ponte
 		
+		int retorno = 0;
 		try {
 			PreparedStatement ps = conBD.prepareStatement(SQL);
 			
 			ps.setInt(1, via.getId());
 			
-			int rowsAffected = ps.executeUpdate();
-			
-			if (rowsAffected > 0) {
-				con.fecharConexao();
-				return true;
-			}
+			retorno = ps.executeUpdate();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -214,7 +214,7 @@ public class ViagemDAO implements IViagemDAO {
 			con.fecharConexao();
 		}
 
-		return false;
+		return (retorno==0 ? false:true);
 	}
 
 }

@@ -9,7 +9,7 @@ import modelo.InfoViagem;
 public class ViagemJTableModel extends AbstractTableModel{
 	
 	private ArrayList<InfoViagem> lista;
-	private String[] colunas ={"Nome", "Destino"};
+	private String[] colunas ={"id", "Nome", "Destino"};
 
 	public ViagemJTableModel(ArrayList<InfoViagem> lista) {
 		this.lista=lista;
@@ -29,9 +29,11 @@ public class ViagemJTableModel extends AbstractTableModel{
 	public Object getValueAt(int rowIndex, int columnIndex) {
 	    InfoViagem v = lista.get(rowIndex);
 	    switch (columnIndex) {
-	        case 0:
+	    	case 0:
+	    		return v.getId();
+	    	case 1:
 	        	return v.getNome();
-	        case 1:
+	        case 2:
 	            return v.getDestino();
 	        default:
 	            return null;

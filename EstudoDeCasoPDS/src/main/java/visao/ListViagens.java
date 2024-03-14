@@ -154,14 +154,24 @@ public class ListViagens extends JFrame {
 		JButton btnExcluir = new JButton("Excluir viagem");
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int idx_linha = table.getSelectedRow();
-				if(idx_linha < 0) {
+				int linha = table.getSelectedRow();
+				if(linha < 0) {
 					JOptionPane.showMessageDialog(null, "Selecione a pessoa para excluir!");
 					return;
 				}
 				
-				listaViagens.remove(idx_linha);
-				atualizarJTableModel();
+				InfoViagem viagemSelecionada = listaViagens.get(linha);
+				
+				ViagemDAO dao = ViagemDAO.getInstancia();
+				boolean foi = dao.removerViagens(viagemSelecionada);
+				
+				if (foi) {
+					listaViagens.remove(linha);
+					atualizarJTableModel();
+				} else {
+					//não foi
+				}
+				
 			}
 		});
 		btnExcluir.setBackground(new Color(66, 142, 66));

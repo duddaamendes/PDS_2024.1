@@ -271,8 +271,15 @@ public class EdicaoViagem extends JFrame {
 				}
 				viagemSelecionada.setDoc(doc);
 				
-				ViagemDAO viagemDAO = new ViagemDAO();
-				viagemDAO.atualizarViagens(viagemSelecionada);
+				ViagemDAO viagemDAO = ViagemDAO.getInstancia();
+				
+				int retorno = viagemDAO.atualizarViagens(viagemSelecionada);
+				
+				if (retorno == 0) {
+					// mensagem erro
+				} else {
+					janela.atualizarDadosViagem(viagemSelecionada); // atualiza o dado da tabela
+				}
 				
 				dispose();
 			}
