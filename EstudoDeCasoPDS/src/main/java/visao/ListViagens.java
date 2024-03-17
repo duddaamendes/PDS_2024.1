@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import controle.ViagemDAO;
 import modelo.InfoViagem;
@@ -72,7 +73,7 @@ public class ListViagens extends JFrame {
 		contentPane.setLayout(new MigLayout("", "[][][][][grow][][][][][][][][]", "[][][][grow][][][][][][][][]"));
 		
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(CadastroViagem.class.getResource("/imgs/Logo100.png")));
+		lblNewLabel.setIcon(new ImageIcon());
 		contentPane.add(lblNewLabel, "flowx,cell 0 0 5 3,alignx right");
 		
 		JLabel label = new JLabel("Viagens cadastradas:");
@@ -131,6 +132,7 @@ public class ListViagens extends JFrame {
 				InfoViagem viagemSelecionada = listaViagens.get(linha);
 				EdicaoViagem janelaAlterar = new EdicaoViagem(viagemSelecionada, estaJanela1);
 				janelaAlterar.setVisible(true);
+				atualizarJTableModel();
 			}		
 		});
 		btnEditar.setBackground(new Color(66, 142, 66));
@@ -181,21 +183,19 @@ public class ListViagens extends JFrame {
 
 	}
 	
-	public void atualizarJTableModel() {
-		table.setModel(new ViagemJTableModel(listaViagens));
-	}
-	
-	public void atualizarDadosViagem(InfoViagem viagem) {
-		int linhaSelecionada = table.getSelectedRow();
-		listaViagens.set(linhaSelecionada, viagem);
+	protected void atualizarJTableModel() {
+		DefaultTableModel modelo = new DefaultTableModel(new Object[][] {}, new String[] { "ID", "Nome", "Destino" });
+
+		ViagemDAO viaDAO = ViagemDAO.getInstancia();
+		listaViagens = viaDAO.listarViagens();
+
+		for (int i = 0; i < listaViagens.size(); i++) {
+			InfoViagem v = listaViagens.get(i);
+			modelo.addRow(new Object[] { v.getId(), v.getNome(), v.getDestino() });
+		}
+
+		table.setModel(modelo);
 		
-		atualizarJTableModel();
-	}
-	
-	public void cadastrarViagem(InfoViagem viagem) {
-		listaViagens.add(viagem);
-		
-		atualizarJTableModel();
 	}
 	
 	static class RoundedBorder extends AbstractBorder {

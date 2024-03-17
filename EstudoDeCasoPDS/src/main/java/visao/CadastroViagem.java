@@ -254,7 +254,6 @@ public class CadastroViagem extends JFrame {
 				if(dTermino.isBefore(dInicio)) {
 					JOptionPane.showMessageDialog(null, "Data de termino inválida!");
 					return ;
-
 				}
 				
 				
@@ -295,7 +294,8 @@ public class CadastroViagem extends JFrame {
 				ViagemDAO dao = new ViagemDAO();
 				dao.inserirViagem(v);
 				
-				list.cadastrarViagem(v);
+				list.atualizarJTableModel();
+	
 				dispose();
 			}
 

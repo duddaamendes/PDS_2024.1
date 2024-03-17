@@ -109,7 +109,12 @@ public class EdicaoViagem extends JFrame {
 		JLabel lblNewLabel_9 = new JLabel("Data de início:");
 		contentPane.add(lblNewLabel_9, "cell 4 7");
 		
-		txtDataInicio = new JTextField();
+		try {
+            MaskFormatter mask = new MaskFormatter("####-##-##");
+            txtDataInicio = new JFormattedTextField(mask);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 		txtDataInicio.setText(String.valueOf(viagemSelecionada.getDataInicio()));
 		contentPane.add(txtDataInicio, "cell 5 7 5 1,growx");
 		txtDataInicio.setColumns(10);
@@ -119,7 +124,12 @@ public class EdicaoViagem extends JFrame {
 		contentPane.add(lblNewLabel_9_1, "cell 10 7");
 		
 
-		txtDataTermino = new JTextField();
+		try {
+            MaskFormatter mask = new MaskFormatter("####-##-##");
+            txtDataTermino = new JFormattedTextField(mask);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 		txtDataTermino.setText(String.valueOf(viagemSelecionada.getDataTermino()));
 		contentPane.add(txtDataTermino, "cell 11 7 6 1,growx");
 		txtDataTermino.setColumns(10);
@@ -228,21 +238,39 @@ public class EdicaoViagem extends JFrame {
 				viagemSelecionada.setDestino(destino);
 				
 				String dataInicio = txtDataInicio.getText();
-				LocalDate dInicio = LocalDate.parse(dataInicio);
-				if(dInicio.isBefore(dInicio)) {
+				LocalDate dInicio;
+				try {
+					dInicio = LocalDate.parse(dataInicio);
+				}catch(Exception ex) {
+					JOptionPane.showMessageDialog(null, "Data de inicio inválida!");
+					return ;
+					
+				}
+				if (dInicio==null) {
 					JOptionPane.showMessageDialog(null, "Data de inicio inválida!");
 					return ;
 				}
 				viagemSelecionada.setDataInicio(dInicio);
 				
 				String dataTermino = txtDataTermino.getText();
-				LocalDate dTermino = LocalDate.parse(dataTermino);
+				LocalDate dTermino;
+				try {
+					dTermino = LocalDate.parse(dataTermino);
+				}catch(Exception ex) {
+					JOptionPane.showMessageDialog(null, "Data de termino inválida!");
+					return ;
+					
+				}
+				if (dTermino==null) {
+					JOptionPane.showMessageDialog(null, "Data de termino inválida!");
+					return ;
+				}
 				if(dTermino.isBefore(dInicio)) {
 					JOptionPane.showMessageDialog(null, "Data de termino inválida!");
 					return ;
 
 				}
-				viagemSelecionada.setDataInicio(dTermino);
+				viagemSelecionada.setDataTermino(dTermino);
 				
 				String atividades = txtAtividades.getText();
 				if(atividades.length() == 0) {
@@ -278,7 +306,7 @@ public class EdicaoViagem extends JFrame {
 				if (retorno == 0) {
 					// mensagem erro
 				} else {
-					janela.atualizarDadosViagem(viagemSelecionada); // atualiza o dado da tabela
+					janela.atualizarJTableModel(); // atualiza o dado da tabela
 				}
 				
 				dispose();
