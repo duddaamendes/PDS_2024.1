@@ -164,15 +164,10 @@ public class ListViagens extends JFrame {
 				
 				InfoViagem viagemSelecionada = listaViagens.get(linha);
 				
-				ViagemDAO dao = ViagemDAO.getInstancia();
-				boolean foi = dao.removerViagens(viagemSelecionada);
-				
-				if (foi) {
-					listaViagens.remove(linha);
-					atualizarJTableModel();
-				} else {
-					//não foi
-				}
+				viagemDAO.removerViagens(viagemSelecionada);
+
+				listaViagens.remove(linha);
+				atualizarJTableModel();
 				
 			}
 		});
@@ -186,8 +181,8 @@ public class ListViagens extends JFrame {
 	protected void atualizarJTableModel() {
 		DefaultTableModel modelo = new DefaultTableModel(new Object[][] {}, new String[] { "ID", "Nome", "Destino" });
 
-		ViagemDAO viaDAO = ViagemDAO.getInstancia();
-		listaViagens = viaDAO.listarViagens();
+		
+		listaViagens = viagemDAO.listarViagens();
 
 		for (int i = 0; i < listaViagens.size(); i++) {
 			InfoViagem v = listaViagens.get(i);

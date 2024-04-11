@@ -1,8 +1,12 @@
 package controle;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Conexao {
 	private static final String USERNAME = "root";
@@ -14,7 +18,7 @@ public class Conexao {
 	private Conexao () {} //construtor privado
 	
 	/**
-	 * MÃ©todo Singleton
+	 * Metodo Singleton
 	 * 
 	 * @return
 	 */
@@ -58,4 +62,6 @@ public class Conexao {
 		}
 		return false;
 	}
+	
 }
+

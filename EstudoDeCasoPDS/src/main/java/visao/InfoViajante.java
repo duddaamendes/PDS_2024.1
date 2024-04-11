@@ -36,13 +36,7 @@ public class InfoViajante extends JFrame {
 	private JFormattedTextField txtDoc;
 	private JTextField txtAtividade;
 
-	/**
-	 * Launch the application.
-	 */
 
-	/**
-	 * Create the frame.
-	 */
 	public InfoViajante(InfoViagem viagemSelecionada, ListViagens janela) {
 		setTitle("Informaçõeso da viagem selecionada");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -24,6 +24,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.awt.event.ActionEvent;
 
 public class EdicaoViagem extends JFrame {
@@ -40,15 +41,6 @@ public class EdicaoViagem extends JFrame {
 	private JTextField txtOrcamento;
 	private JTextField txtDoc;
 
-
-	/**
-	 * Launch the application.
-	 */
-
-
-	/**
-	 * Create the frame.
-	 */
 	public EdicaoViagem(final InfoViagem viagemSelecionada, final ListViagens janela) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 550, 409);
@@ -88,8 +80,8 @@ public class EdicaoViagem extends JFrame {
 		contentPane.add(lblNewLabel_7, "cell 4 6");
 		
 		try {
-            MaskFormatter mask = new MaskFormatter("(##) #####-####");
-            txtTelefone = new JFormattedTextField(mask);
+            MaskFormatter mascaraTel = new MaskFormatter("(##) #####-####");
+            txtTelefone = new JFormattedTextField(mascaraTel);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -110,8 +102,8 @@ public class EdicaoViagem extends JFrame {
 		contentPane.add(lblNewLabel_9, "cell 4 7");
 		
 		try {
-            MaskFormatter mask = new MaskFormatter("####-##-##");
-            txtDataInicio = new JFormattedTextField(mask);
+            MaskFormatter mascaraDI = new MaskFormatter("##/##/####");
+            txtDataInicio = new JFormattedTextField(mascaraDI);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -125,8 +117,8 @@ public class EdicaoViagem extends JFrame {
 		
 
 		try {
-            MaskFormatter mask = new MaskFormatter("####-##-##");
-            txtDataTermino = new JFormattedTextField(mask);
+            MaskFormatter mascaraDT = new MaskFormatter("##/##/####");
+            txtDataTermino = new JFormattedTextField(mascaraDT);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -148,8 +140,8 @@ public class EdicaoViagem extends JFrame {
 		contentPane.add(lblNewLabel_10_1, "cell 10 9");
 		
 		try {
-            MaskFormatter mask = new MaskFormatter("###.###.###-##");
-            txtDoc = new JFormattedTextField(mask);
+            MaskFormatter mascaraDoc = new MaskFormatter("###.###.###-##");
+            txtDoc = new JFormattedTextField(mascaraDoc);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -237,10 +229,11 @@ public class EdicaoViagem extends JFrame {
 				}
 				viagemSelecionada.setDestino(destino);
 				
+				DateTimeFormatter dataI = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 				String dataInicio = txtDataInicio.getText();
 				LocalDate dInicio;
 				try {
-					dInicio = LocalDate.parse(dataInicio);
+					dInicio = LocalDate.parse(dataInicio, dataI);
 				}catch(Exception ex) {
 					JOptionPane.showMessageDialog(null, "Data de inicio inválida!");
 					return ;
@@ -252,10 +245,11 @@ public class EdicaoViagem extends JFrame {
 				}
 				viagemSelecionada.setDataInicio(dInicio);
 				
+				DateTimeFormatter dataT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 				String dataTermino = txtDataTermino.getText();
 				LocalDate dTermino;
 				try {
-					dTermino = LocalDate.parse(dataTermino);
+					dTermino = LocalDate.parse(dataTermino, dataT);
 				}catch(Exception ex) {
 					JOptionPane.showMessageDialog(null, "Data de termino inválida!");
 					return ;
@@ -300,14 +294,8 @@ public class EdicaoViagem extends JFrame {
 				viagemSelecionada.setDoc(doc);
 				
 				ViagemDAO viagemDAO = ViagemDAO.getInstancia();
-				
-				int retorno = viagemDAO.atualizarViagens(viagemSelecionada);
-				
-				if (retorno == 0) {
-					// mensagem erro
-				} else {
-					janela.atualizarJTableModel(); // atualiza o dado da tabela
-				}
+				viagemDAO.atualizarViagens(viagemSelecionada);
+				janela.atualizarJTableModel();
 				
 				dispose();
 			}

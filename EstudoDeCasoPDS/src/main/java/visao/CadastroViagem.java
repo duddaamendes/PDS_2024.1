@@ -17,6 +17,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField;
@@ -86,8 +87,8 @@ public class CadastroViagem extends JFrame {
 		contentPane.add(lblNewLabel_7, "cell 4 6");
 		
 		try {
-            MaskFormatter mask = new MaskFormatter("(##) #####-####");
-            txtTelefone = new JFormattedTextField(mask);
+            MaskFormatter mascaraTel = new MaskFormatter("(##) #####-####");
+            txtTelefone = new JFormattedTextField(mascaraTel);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -107,8 +108,8 @@ public class CadastroViagem extends JFrame {
 		contentPane.add(lblNewLabel_9, "cell 4 7");
 		
 		try {
-            MaskFormatter mask = new MaskFormatter("####-##-##");
-            txtDataInicio = new JFormattedTextField(mask);
+            MaskFormatter mascaraDI = new MaskFormatter("##/##/####");
+            txtDataInicio = new JFormattedTextField(mascaraDI);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -120,8 +121,8 @@ public class CadastroViagem extends JFrame {
 		contentPane.add(lblNewLabel_9_1, "cell 10 7");
 		
 		try {
-            MaskFormatter mask = new MaskFormatter("####-##-##");
-            txtDataTermino = new JFormattedTextField(mask);
+            MaskFormatter mascaraDT = new MaskFormatter("##/##/####");
+            txtDataTermino = new JFormattedTextField(mascaraDT);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -142,8 +143,8 @@ public class CadastroViagem extends JFrame {
 		contentPane.add(lblNewLabel_8_1, "cell 10 9");
 		
 		try {
-            MaskFormatter mask = new MaskFormatter("###.###.###-##");
-            txtDoc = new JFormattedTextField(mask);
+            MaskFormatter mascaraDoc = new MaskFormatter("###.###.###-##");
+            txtDoc = new JFormattedTextField(mascaraDoc);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -216,6 +217,7 @@ public class CadastroViagem extends JFrame {
 
 				}
 				
+				
 				String destino = txtDestino.getText();
 				if(destino.length() == 0) {
 					JOptionPane.showMessageDialog(null, "Campo Destino da viagem obrigatório!");
@@ -223,10 +225,11 @@ public class CadastroViagem extends JFrame {
 
 				}
 				
+				DateTimeFormatter dataI = DateTimeFormatter.ofPattern("dd/MM/yyyy");	
 				String dataInicio = txtDataInicio.getText();
 				LocalDate dInicio;
 				try {
-					dInicio = LocalDate.parse(dataInicio);
+					dInicio = LocalDate.parse(dataInicio, dataI);
 				}catch(Exception ex) {
 					JOptionPane.showMessageDialog(null, "Data de inicio inválida!");
 					return ;
@@ -237,11 +240,11 @@ public class CadastroViagem extends JFrame {
 					return ;
 				}
 				
-				
+				DateTimeFormatter dataT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 				String dataTermino = txtDataTermino.getText();
 				LocalDate dTermino;
 				try {
-					dTermino = LocalDate.parse(dataTermino);
+					dTermino = LocalDate.parse(dataTermino, dataT);
 				}catch(Exception ex) {
 					JOptionPane.showMessageDialog(null, "Data de termino inválida!");
 					return ;
