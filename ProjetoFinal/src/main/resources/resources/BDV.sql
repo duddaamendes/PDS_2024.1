@@ -22,5 +22,3 @@ insert into viagens (nome, email, telefone, destino, dataInicio, dataTermino, at
 insert into viagens (nome, email, telefone, destino, dataInicio, dataTermino, atividades, orcamento, doc) values ('Betty Roocroft', 'broocroft3@un.org', '1604595993', 'Mongolia', '2023-09-17', '2024-04-26', 'Orkhon University', 572, 37033415961);
 
 select * from viagens;
-
-desc viagens;

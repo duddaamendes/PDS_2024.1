@@ -13,6 +13,12 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+
 import controle.ViagemDAO;
 import modelo.InfoViagem;
 import net.miginfocom.swing.MigLayout;
@@ -24,6 +30,7 @@ import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
@@ -116,8 +123,26 @@ public class ListViagens extends JFrame {
 			}
 		});
 		btnSair.setFont(new Font("Calibri", Font.BOLD, 15));
-		btnSair.setIcon(new ImageIcon(EdicaoViagem.class.getResource("/imgs/Vector.png")));
+		btnSair.setIcon(new ImageIcon(EdicaoViagem.class.getResource("")));
 		contentPane.add(btnSair, "cell 9 11 3 1");
+		
+		JButton btnPdf = new JButton("Gerar PDF");
+		btnPdf.setForeground(new Color(255, 255, 245));
+		btnPdf.setBackground(new Color(1, 50, 1));
+		btnPdf.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int linha = table.getSelectedRow();
+				InfoViagem viagemSelecionada = listaViagens.get(linha);
+				if (linha>0) {
+					criarPDF(viagemSelecionada);
+				} else {
+					JOptionPane.showMessageDialog(null, "Você deve selecionar uma viagem para realizar a edição");
+					return ;
+				}
+			}
+		});
+		btnPdf.setFont(new Font("Calibri", Font.BOLD, 15));
+		contentPane.add(btnPdf, "cell 1 11 5 1");
 		
 		JButton btnEditar = new JButton("Editar viagem");
 		final ListViagens estaJanela1 = this;
@@ -176,6 +201,59 @@ public class ListViagens extends JFrame {
 		btnExcluir.setFont(new Font("Calibri", Font.BOLD, 15));
 		contentPane.add(btnExcluir, "cell 6 10,alignx right");
 
+	}
+	
+	private void criarPDF(InfoViagem vg) {
+		PDDocument documento = new PDDocument();
+		PDPage pag = new PDPage(PDRectangle.A4);
+		documento.addPage(pag);
+		
+		try {
+			PDPageContentStream doc = new PDPageContentStream(documento, pag);
+			doc.beginText();
+			doc.setFont(PDType1Font.TIMES_ROMAN, 12);
+			doc.newLineAtOffset(25, 750);
+			
+			doc.showText("Viagem:");
+			doc.newLine();
+			doc.showText("Nome");
+			doc.showText(vg.getNome());
+			doc.newLine();
+			doc.showText("Email:");
+			doc.showText(vg.getEmial());
+			doc.newLine();
+			doc.showText("Telefone:");
+			doc.showText(vg.getTelefone());
+			doc.newLine();
+			doc.showText("Destino:");
+			doc.showText(vg.getDestino());
+			doc.newLine();
+			doc.showText("Data de início:");
+			doc.showText((vg.getDataInicio()).toString());
+			doc.newLine();
+			doc.showText("Data de termino:");
+			doc.showText((vg.getDataTermino()).toString());
+			doc.newLine();
+			doc.showText("Atividades:");
+			doc.showText(vg.getAtividades());
+			doc.newLine();
+			doc.showText("Orçamento:");
+			doc.showText((vg.getOrcaomento()).toString());
+			doc.newLine();
+			doc.showText("Documento:");
+			doc.showText(vg.getDoc());
+			
+			doc.endText();
+			doc.close();
+			
+			String docNome = "viagem " + vg.getNome() + ".pdf";
+			documento.save(docNome);
+			documento.close();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	protected void atualizarJTableModel() {
