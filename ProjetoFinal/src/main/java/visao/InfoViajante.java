@@ -19,6 +19,7 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.awt.event.ActionEvent;
 
@@ -110,7 +111,7 @@ public class InfoViajante extends JFrame {
 		txtDataInicio.setFont(new Font("Calibri", Font.ITALIC, 11));
 		txtDataInicio.setEditable(false);
 		txtDataInicio.setColumns(10);
-		txtDataInicio.setText(String.valueOf(viagemSelecionada.getDataInicio()));
+		txtDataInicio.setText(viagemSelecionada.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 		contentPane.add(txtDataInicio, "cell 3 5 9 1,growx");
 		
 		JLabel lblDataDeTermino = new JLabel("Data de termino:");
@@ -121,7 +122,7 @@ public class InfoViajante extends JFrame {
 		txtDataTermino.setFont(new Font("Calibri", Font.ITALIC, 11));
 		txtDataTermino.setEditable(false);
 		txtDataTermino.setColumns(10);
-		txtDataTermino.setText(String.valueOf(viagemSelecionada.getDataTermino()));
+		txtDataTermino.setText(viagemSelecionada.getDataTermino().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 		contentPane.add(txtDataTermino, "cell 13 5 13 1,growx");
 		
 		JLabel lblNewLabel_1_1_1_1_1_1 = new JLabel("Orçamento de viagem:");

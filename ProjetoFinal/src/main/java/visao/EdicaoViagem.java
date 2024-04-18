@@ -107,7 +107,7 @@ public class EdicaoViagem extends JFrame {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-		txtDataInicio.setText(String.valueOf(viagemSelecionada.getDataInicio()));
+		txtDataInicio.setText(viagemSelecionada.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 		contentPane.add(txtDataInicio, "cell 5 7 5 1,growx");
 		txtDataInicio.setColumns(10);
 		
@@ -122,7 +122,7 @@ public class EdicaoViagem extends JFrame {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-		txtDataTermino.setText(String.valueOf(viagemSelecionada.getDataTermino()));
+		txtDataTermino.setText(viagemSelecionada.getDataTermino().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 		contentPane.add(txtDataTermino, "cell 11 7 6 1,growx");
 		txtDataTermino.setColumns(10);
 		

@@ -35,6 +35,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
@@ -75,16 +76,11 @@ public class ListViagens extends JFrame {
 		contentPane.setBackground(new Color(255, 255, 245));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		
-		Color borderColorB = new Color(1, 50, 1); 
-		int smallerRadiusB = 5;
-		RoundedBorder roundedBorderButtons= new RoundedBorder(smallerRadiusB, borderColorB);
-
 		setContentPane(contentPane);
 		contentPane.setLayout(new MigLayout("", "[][][][][grow][][][][][][][][]", "[][][][grow][][][][][][][][]"));
 		
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon());
+		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\acer aspire 5\\OneDrive\\Área de Trabalho\\IFSC materias\\PDS\\PDS_2024.1\\ProjetoFinal\\src\\main\\resources\\imgs\\Logo100.png"));
 		contentPane.add(lblNewLabel, "flowx,cell 0 0 5 3,alignx right");
 		
 		JLabel label = new JLabel("Viagens cadastradas:");
@@ -111,13 +107,7 @@ public class ListViagens extends JFrame {
 		});
 		scrollPane.setViewportView(table);
 		
-		Color borderColor = new Color(1, 50, 1); 
-		int smallerRadius = 3;
-		RoundedBorder roundedBorder = new RoundedBorder(smallerRadius, borderColor);
 		final ListViagens janela = this;
-		
-		
-		
 		JButton btnSair = new JButton("Sair da tela");
 		btnSair.setForeground(new Color(255, 255, 245));
 		btnSair.setBackground(new Color(1, 50, 1));
@@ -127,7 +117,7 @@ public class ListViagens extends JFrame {
 			}
 		});
 		btnSair.setFont(new Font("Calibri", Font.BOLD, 15));
-		btnSair.setIcon(new ImageIcon(EdicaoViagem.class.getResource("")));
+		btnSair.setIcon(new ImageIcon("C:\\Users\\acer aspire 5\\OneDrive\\Área de Trabalho\\IFSC materias\\PDS\\PDS_2024.1\\ProjetoFinal\\src\\main\\resources\\imgs\\Vector.png"));
 		contentPane.add(btnSair, "cell 9 11 3 1");
 		
 		JButton btnPdf = new JButton("Gerar PDF");
@@ -170,7 +160,6 @@ public class ListViagens extends JFrame {
 		contentPane.add(btnEditar, "cell 8 10");
 		
 		JButton btnCadastrar = new JButton("Cadastrar uma nova viagem");
-		btnCadastrar.setBorder(roundedBorderButtons);
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CadastroViagem janelaCadastrar = new CadastroViagem(janela);
@@ -213,6 +202,10 @@ public class ListViagens extends JFrame {
 		
 		com.aspose.pdf.Page pag = doc.getPages().add();
 		
+		String dataInicio = vg.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		String dataTermino = vg.getDataTermino().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		String orc = String.valueOf(vg.getOrcaomento());
+		
 		pag.getParagraphs().add(new TextFragment ("Viagem: "));
 		pag.getParagraphs().add(new TextFragment (" "));
 		pag.getParagraphs().add(new TextFragment (" "));
@@ -224,19 +217,17 @@ public class ListViagens extends JFrame {
 		pag.getParagraphs().add(new TextFragment (" "));
 		pag.getParagraphs().add(new TextFragment ("Destino: "+vg.getDestino()));
 		pag.getParagraphs().add(new TextFragment (" "));
-		pag.getParagraphs().add(new TextFragment ("Data de Inicio: "+(vg.getDataInicio()).toString()));
+		pag.getParagraphs().add(new TextFragment ("Data de Inicio: "+ dataInicio));
 		pag.getParagraphs().add(new TextFragment (" "));
-		pag.getParagraphs().add(new TextFragment ("Data de Termino: "+(vg.getDataTermino()).toString()));
+		pag.getParagraphs().add(new TextFragment ("Data de Termino: "+ dataTermino));
 		pag.getParagraphs().add(new TextFragment (" "));
 		pag.getParagraphs().add(new TextFragment ("Atividades: "+vg.getAtividades()));
 		pag.getParagraphs().add(new TextFragment (" "));
-		pag.getParagraphs().add(new TextFragment ("Orçamento: "+(vg.getOrcaomento()).toString()));
+		pag.getParagraphs().add(new TextFragment ("Orçamento: "+orc));
 		pag.getParagraphs().add(new TextFragment (" "));
 		pag.getParagraphs().add(new TextFragment ("Documento: "+vg.getDoc()));
 		pag.getParagraphs().add(new TextFragment (" "));
-		
-		
-		
+			
 		doc.save("Viagem "+vg.getNome()+".pdf");
 		
 	}
@@ -256,31 +247,4 @@ public class ListViagens extends JFrame {
 		
 	}
 	
-	static class RoundedBorder extends AbstractBorder {
-		private final int radius;
-	    private final Color color;
-
-	    public RoundedBorder(int radius, Color color) {
-	        this.radius = radius;
-	        this.color = color;
-	    }
-
-	    @Override
-	    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-	        Color oldColor = g.getColor();
-	        g.setColor(color);
-	        g.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
-	        g.setColor(oldColor);
-	    }
-
-	    @Override
-	    public Insets getBorderInsets(Component c) {
-	        return new Insets(this.radius + 1, this.radius + 1, this.radius + 2, this.radius);
-	    }
-
-	    @Override
-	    public boolean isBorderOpaque() {
-	        return true;
-	    }
-    }
 }
