@@ -174,54 +174,6 @@ public class InfoViajante extends JFrame {
 		btnNewButton.setBackground(new Color(1, 50, 1));
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 12));
 		contentPane.add(btnNewButton, "cell 0 8 29 1,alignx center,aligny center");
-		
-		Color borderColor = new Color(1, 50, 1); 
-		int smallerRadius = 3;
-		RoundedBorder roundedBorder = new RoundedBorder(smallerRadius, borderColor);
-		
-		txtNome.setBorder(roundedBorder);
-        txtEmail.setBorder(roundedBorder);
-        txtTelefone.setBorder(roundedBorder);
-        txtDestino.setBorder(roundedBorder);
-        txtDataInicio.setBorder(roundedBorder);
-        txtDataTermino.setBorder(roundedBorder);
-        txtAtividade.setBorder(roundedBorder);
-        txtOrcamento.setBorder(roundedBorder);
-        txtDoc.setBorder(roundedBorder);
 	}
-	
-	static class RoundedBorder extends AbstractBorder {
-        private final int radius;
-        private final Color color;
-
-        public RoundedBorder(int radius, Color color) {
-            this.radius = radius;
-            this.color = color;
-        }
-
-        @Override
-        public void paintBorder(
-                java.awt.Component c,
-                Graphics g,
-                int x, int y, int width, int height
-        ) {
-            super.paintBorder(c, g, x, y, width, height);
-            Color oldColor = g.getColor();
-            g.setColor(color);
-            g.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
-            g.setColor(oldColor);
-        }
-
-        @Override
-        public Insets getBorderInsets(java.awt.Component c) {
-            return new Insets(this.radius + 1, this.radius + 1, this.radius + 2, this.radius);
-        }
-
-        @Override
-        public Insets getBorderInsets(java.awt.Component c, Insets insets) {
-            insets.left = insets.top = insets.right = insets.bottom = this.radius + 1;
-            return insets;
-        }
-    }
 
 }

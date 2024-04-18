@@ -12,6 +12,8 @@ import javax.swing.border.EmptyBorder;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -159,20 +161,6 @@ public class CadastroViagem extends JFrame {
 		contentPane.add(txtAtividades, "cell 5 10 17 1,growx");
 		txtAtividades.setColumns(10);
 		
-		Color borderColor = new Color(1, 50, 1); 
-		int smallerRadius = 3;
-		RoundedBorder roundedBorder = new RoundedBorder(smallerRadius, borderColor);
-        
-        txtNome.setBorder(roundedBorder);
-        txtEmail.setBorder(roundedBorder);
-        txtTelefone.setBorder(roundedBorder);
-        txtDestino.setBorder(roundedBorder);
-        txtDataInicio.setBorder(roundedBorder);
-        txtDataTermino.setBorder(roundedBorder);
-        txtAtividades.setBorder(roundedBorder);
-        txtOrcamento.setBorder(roundedBorder);
-        txtDoc.setBorder(roundedBorder);
-		
 		JButton btnLimpar = new JButton("Limpar campos");
 		btnLimpar.setForeground(new Color(255, 255, 245));
 		btnLimpar.setBackground(new Color(1, 50, 1));
@@ -215,6 +203,11 @@ public class CadastroViagem extends JFrame {
 					JOptionPane.showMessageDialog(null, "Campo Email do viajante obrigatório!");
 					return ;
 
+				}
+				
+				if (!CadastroViagem.isValidEmailAddress(email)) {
+					JOptionPane.showMessageDialog(null,  "Email inválido!");
+					return;
 				}
 				
 				
@@ -331,32 +324,15 @@ public class CadastroViagem extends JFrame {
 		contentPane.add(btnSair, "cell 11 13 11 1");
 	}	
 	
-	
-	static class RoundedBorder extends AbstractBorder {
-		private final int radius;
-	    private final Color color;
-
-	    public RoundedBorder(int radius, Color color) {
-	        this.radius = radius;
-	        this.color = color;
-	    }
-
-	    @Override
-	    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-	        Color oldColor = g.getColor();
-	        g.setColor(color);
-	        g.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
-	        g.setColor(oldColor);
-	    }
-
-	    @Override
-	    public Insets getBorderInsets(Component c) {
-	        return new Insets(this.radius + 1, this.radius + 1, this.radius + 2, this.radius);
-	    }
-
-	    @Override
-	    public boolean isBorderOpaque() {
-	        return true;
-	    }
+	public static boolean isValidEmailAddress(String email) {
+		//https://receitasdecodigo.com.br/java/validar-email-em-java
+        boolean result = true;
+        try {
+            InternetAddress emailAddr = new InternetAddress(email);
+            emailAddr.validate();
+        } catch (AddressException ex) {
+            result = false;
+        }
+        return result;
     }
 }

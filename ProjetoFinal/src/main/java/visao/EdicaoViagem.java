@@ -12,6 +12,8 @@ import modelo.InfoViagem;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -158,24 +160,11 @@ public class EdicaoViagem extends JFrame {
 		contentPane.add(txtAtividades, "cell 5 10 12 1,growx");
 		txtAtividades.setColumns(10);
 		
-		Color borderColor = new Color(1, 50, 1); 
-		int smallerRadius = 3;
-		RoundedBorder roundedBorder = new RoundedBorder(smallerRadius, borderColor);
-
-        
-        txtNome.setBorder(roundedBorder);
-        txtEmail.setBorder(roundedBorder);
-        txtTelefone.setBorder(roundedBorder);
-        txtDestino.setBorder(roundedBorder);
-        txtDataInicio.setBorder(roundedBorder);
-        txtDataTermino.setBorder(roundedBorder);
-        txtAtividades.setBorder(roundedBorder);
-        txtOrcamento.setBorder(roundedBorder);
-        txtDoc.setBorder(roundedBorder);
+		
         
 		
 		JButton btnLimpar = new JButton("Limpar campos");
-		btnLimpar.setBorder(roundedBorder);
+		
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				txtNome.setText("");
@@ -196,7 +185,7 @@ public class EdicaoViagem extends JFrame {
 		contentPane.add(btnLimpar, "cell 4 12 6 1,alignx right");
 		
 		JButton btnEditarViagem = new JButton("Editar viagem");
-		btnEditarViagem.setBorder(roundedBorder);
+		
 		btnEditarViagem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nome = txtNome.getText();
@@ -218,6 +207,10 @@ public class EdicaoViagem extends JFrame {
 					JOptionPane.showMessageDialog(null, "Campo Email do viajante obrigatório!");
 					return ;
 
+				}
+				if (!CadastroViagem.isValidEmailAddress(email)) {
+					JOptionPane.showMessageDialog(null,  "Email inválido!");
+					return;
 				}
 				viagemSelecionada.setEmial(email);
 				
@@ -316,7 +309,7 @@ public class EdicaoViagem extends JFrame {
 		contentPane.add(lblNewLabel_4, "cell 5 1 10 1");
 		
 		JButton btnSair = new JButton("Cancelar edição");
-		btnSair.setBorder(roundedBorder);
+		
 		btnSair.setForeground(new Color(255, 255, 245));
 		btnSair.setBackground(new Color(1, 50, 1));
 		btnSair.addActionListener(new ActionListener() {
@@ -329,38 +322,17 @@ public class EdicaoViagem extends JFrame {
 		contentPane.add(btnSair, "cell 11 13 6 1");
 	}
 	
-	static class RoundedBorder extends AbstractBorder {
-        private final int radius;
-        private final Color color;
-
-        public RoundedBorder(int radius, Color color) {
-            this.radius = radius;
-            this.color = color;
+	public static boolean isValidEmailAddress(String email) {
+		//https://receitasdecodigo.com.br/java/validar-email-em-java
+        boolean result = true;
+        try {
+            InternetAddress emailAddr = new InternetAddress(email);
+            emailAddr.validate();
+        } catch (AddressException ex) {
+            result = false;
         }
-
-        @Override
-        public void paintBorder(
-                java.awt.Component c,
-                Graphics g,
-                int x, int y, int width, int height
-        ) {
-            super.paintBorder(c, g, x, y, width, height);
-            Color oldColor = g.getColor();
-            g.setColor(color);
-            g.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
-            g.setColor(oldColor);
-        }
-
-        @Override
-        public Insets getBorderInsets(java.awt.Component c) {
-            return new Insets(this.radius + 1, this.radius + 1, this.radius + 2, this.radius);
-        }
-
-        @Override
-        public Insets getBorderInsets(java.awt.Component c, Insets insets) {
-            insets.left = insets.top = insets.right = insets.bottom = this.radius + 1;
-            return insets;
-        }
+        return result;
     }
+	
 
 }
