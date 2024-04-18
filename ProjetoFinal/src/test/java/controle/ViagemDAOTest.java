@@ -19,7 +19,7 @@ public class ViagemDAOTest {
 		LocalDate di = LocalDate.parse("2023-10-14");
 		LocalDate dt = LocalDate.parse("2023-10-24");
 		
-		vg.setId(5);
+		vg.setId(11);
 		vg.setNome("maria eduarda");
 		vg.setEmial("maria@gmail.com");
 		vg.setTelefone("(47) 98810-8919");
@@ -27,7 +27,7 @@ public class ViagemDAOTest {
 		vg.setDataInicio(di);
 		vg.setDataTermino(dt);
 		vg.setAtividades("jogar");
-		vg.setOrcaomento(344.0);
+		vg.setOrcaomento(344d);
 		vg.setDoc("091.719.689-97");
 		
 		int insert = dao.inserirViagem(vg);

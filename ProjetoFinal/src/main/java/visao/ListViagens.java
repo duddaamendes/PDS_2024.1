@@ -19,6 +19,10 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
+import com.aspose.pdf.Document;
+import com.aspose.pdf.TextFragment;
+import com.aspose.pdf.internal.html.drawing.Page;
+
 import controle.ViagemDAO;
 import modelo.InfoViagem;
 import net.miginfocom.swing.MigLayout;
@@ -133,8 +137,8 @@ public class ListViagens extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int linha = table.getSelectedRow();
 				InfoViagem viagemSelecionada = listaViagens.get(linha);
-				if (linha>0) {
-					criarPDF(viagemSelecionada);
+				if (linha>=0) {
+					gerarPDF(viagemSelecionada);
 				} else {
 					JOptionPane.showMessageDialog(null, "Você deve selecionar uma viagem para realizar a edição");
 					return ;
@@ -203,57 +207,38 @@ public class ListViagens extends JFrame {
 
 	}
 	
-	private void criarPDF(InfoViagem vg) {
-		PDDocument documento = new PDDocument();
-		PDPage pag = new PDPage(PDRectangle.A4);
-		documento.addPage(pag);
+	private void gerarPDF(InfoViagem vg) {
+		//https://blog.aspose.com/pt/pdf/create-pdf-files-in-java/
+		Document doc = new Document();
 		
-		try {
-			PDPageContentStream doc = new PDPageContentStream(documento, pag);
-			doc.beginText();
-			doc.setFont(PDType1Font.TIMES_ROMAN, 12);
-			doc.newLineAtOffset(25, 750);
-			
-			doc.showText("Viagem:");
-			doc.newLine();
-			doc.showText("Nome");
-			doc.showText(vg.getNome());
-			doc.newLine();
-			doc.showText("Email:");
-			doc.showText(vg.getEmial());
-			doc.newLine();
-			doc.showText("Telefone:");
-			doc.showText(vg.getTelefone());
-			doc.newLine();
-			doc.showText("Destino:");
-			doc.showText(vg.getDestino());
-			doc.newLine();
-			doc.showText("Data de início:");
-			doc.showText((vg.getDataInicio()).toString());
-			doc.newLine();
-			doc.showText("Data de termino:");
-			doc.showText((vg.getDataTermino()).toString());
-			doc.newLine();
-			doc.showText("Atividades:");
-			doc.showText(vg.getAtividades());
-			doc.newLine();
-			doc.showText("Orçamento:");
-			doc.showText((vg.getOrcaomento()).toString());
-			doc.newLine();
-			doc.showText("Documento:");
-			doc.showText(vg.getDoc());
-			
-			doc.endText();
-			doc.close();
-			
-			String docNome = "viagem " + vg.getNome() + ".pdf";
-			documento.save(docNome);
-			documento.close();
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		com.aspose.pdf.Page pag = doc.getPages().add();
+		
+		pag.getParagraphs().add(new TextFragment ("Viagem: "));
+		pag.getParagraphs().add(new TextFragment (" "));
+		pag.getParagraphs().add(new TextFragment (" "));
+		pag.getParagraphs().add(new TextFragment ("Nome: "+ vg.getNome()));
+		pag.getParagraphs().add(new TextFragment (" "));
+		pag.getParagraphs().add(new TextFragment ("Email: "+vg.getEmial()));
+		pag.getParagraphs().add(new TextFragment (" "));
+		pag.getParagraphs().add(new TextFragment ("Telefone: "+vg.getTelefone()));
+		pag.getParagraphs().add(new TextFragment (" "));
+		pag.getParagraphs().add(new TextFragment ("Destino: "+vg.getDestino()));
+		pag.getParagraphs().add(new TextFragment (" "));
+		pag.getParagraphs().add(new TextFragment ("Data de Inicio: "+(vg.getDataInicio()).toString()));
+		pag.getParagraphs().add(new TextFragment (" "));
+		pag.getParagraphs().add(new TextFragment ("Data de Termino: "+(vg.getDataTermino()).toString()));
+		pag.getParagraphs().add(new TextFragment (" "));
+		pag.getParagraphs().add(new TextFragment ("Atividades: "+vg.getAtividades()));
+		pag.getParagraphs().add(new TextFragment (" "));
+		pag.getParagraphs().add(new TextFragment ("Orçamento: "+(vg.getOrcaomento()).toString()));
+		pag.getParagraphs().add(new TextFragment (" "));
+		pag.getParagraphs().add(new TextFragment ("Documento: "+vg.getDoc()));
+		pag.getParagraphs().add(new TextFragment (" "));
+		
+		
+		
+		doc.save("Viagem "+vg.getNome()+".pdf");
+		
 	}
 	
 	protected void atualizarJTableModel() {
