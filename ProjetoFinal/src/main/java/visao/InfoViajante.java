@@ -4,6 +4,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.MaskFormatter;
+
 import modelo.InfoViagem;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
@@ -19,6 +21,7 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.awt.event.ActionEvent;
@@ -85,7 +88,12 @@ public class InfoViajante extends JFrame {
 		lblNewLabel_1_1_1.setFont(new Font("Calibri", Font.BOLD, 12));
 		contentPane.add(lblNewLabel_1_1_1, "cell 2 4");
 		
-		txtTelefone = new JTextField();
+		try {
+            MaskFormatter mascaraTel = new MaskFormatter("(##) #####-####");
+            txtTelefone = new JFormattedTextField(mascaraTel);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 		txtTelefone.setFont(new Font("Calibri", Font.ITALIC, 11));
 		txtTelefone.setEditable(false);
 		txtTelefone.setColumns(10);
@@ -145,7 +153,12 @@ public class InfoViajante extends JFrame {
 		lblDocumentoDoViajante.setFont(new Font("Calibri", Font.BOLD, 12));
 		contentPane.add(lblDocumentoDoViajante, "cell 12 6");
 		
-		txtDoc = new JFormattedTextField();
+		try {
+            MaskFormatter mascaraDoc = new MaskFormatter("###.###.###-##");
+            txtDoc = new JFormattedTextField(mascaraDoc);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 		txtDoc.setFont(new Font("Calibri", Font.ITALIC, 11));
 		txtDoc.setEditable(false);
 		txtDoc.setColumns(10);

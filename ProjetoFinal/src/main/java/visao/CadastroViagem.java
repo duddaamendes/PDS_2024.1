@@ -25,6 +25,8 @@ import javax.swing.JTextField;
 import javax.swing.JFormattedTextField;
 import javax.swing.text.MaskFormatter;
 
+import com.mxrck.autocompleter.TextAutoCompleter;
+
 import controle.ViagemDAO;
 import modelo.InfoViagem;
 
@@ -48,6 +50,7 @@ public class CadastroViagem extends JFrame {
 	private JTextField txtAtividades;
 	private JTextField txtOrcamento;
 	private JTextField txtDoc;
+	private TextAutoCompleter ac;
 
 	public CadastroViagem(final ListViagens list) {
 		setBackground(new Color(255, 255, 245));
@@ -73,6 +76,7 @@ public class CadastroViagem extends JFrame {
 		contentPane.add(lblNewLabel_2, "cell 4 4");
 		
 		txtNome = new JTextField();
+		
 		contentPane.add(txtNome, "cell 5 4 17 1,growx");
 		txtNome.setColumns(10);
 		
@@ -102,6 +106,34 @@ public class CadastroViagem extends JFrame {
 		contentPane.add(lblNewLabel_8, "cell 10 6");
 		
 		txtDestino = new JTextField();
+		ac = new TextAutoCompleter(txtDestino);
+		ac.addItem("Acre");
+		ac.addItem("Alagoas");
+		ac.addItem("Amapá");
+		ac.addItem("Amazonas");
+		ac.addItem("Bahia");
+		ac.addItem("Ceará");
+		ac.addItem("Espírito Santos");
+		ac.addItem("Goiás");
+		ac.addItem("Maranhão");
+		ac.addItem("Mato Grosso");
+		ac.addItem("Mato Grosso do Sul");
+		ac.addItem("Minas Gerais");
+		ac.addItem("Pará");
+		ac.addItem("Paraíba");
+		ac.addItem("Paraná");
+		ac.addItem("Pernambuco");
+		ac.addItem("Piauí");
+		ac.addItem("Rio de Janeiro");
+		ac.addItem("Rio Grande do Norte");
+		ac.addItem("Rio Grande do Sul");
+		ac.addItem("Rondônia");
+		ac.addItem("Roraima");
+		ac.addItem("Santa Catarina");
+		ac.addItem("São Paulo");
+		ac.addItem("Sergipe");
+		ac.addItem("Tocantins");
+		ac.addItem("Distrito Federal");
 		contentPane.add(txtDestino, "cell 11 6 11 1,growx");
 		txtDestino.setColumns(10);
 		

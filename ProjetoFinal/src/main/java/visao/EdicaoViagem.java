@@ -7,6 +7,8 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
+import com.mxrck.autocompleter.TextAutoCompleter;
+
 import controle.ViagemDAO;
 import modelo.InfoViagem;
 import net.miginfocom.swing.MigLayout;
@@ -42,6 +44,7 @@ public class EdicaoViagem extends JFrame {
 	private JTextField txtAtividades;
 	private JTextField txtOrcamento;
 	private JTextField txtDoc;
+	private TextAutoCompleter ac;
 
 	public EdicaoViagem(final InfoViagem viagemSelecionada, final ListViagens janela) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -99,6 +102,34 @@ public class EdicaoViagem extends JFrame {
 		txtDestino.setText(viagemSelecionada.getDestino());
 		contentPane.add(txtDestino, "cell 11 6 6 1,growx");
 		txtDestino.setColumns(10);
+		ac = new TextAutoCompleter(txtDestino);
+		ac.addItem("Acre");
+		ac.addItem("Alagoas");
+		ac.addItem("Amapá");
+		ac.addItem("Amazonas");
+		ac.addItem("Bahia");
+		ac.addItem("Ceará");
+		ac.addItem("Espírito Santos");
+		ac.addItem("Goiás");
+		ac.addItem("Maranhão");
+		ac.addItem("Mato Grosso");
+		ac.addItem("Mato Grosso do Sul");
+		ac.addItem("Minas Gerais");
+		ac.addItem("Pará");
+		ac.addItem("Paraíba");
+		ac.addItem("Paraná");
+		ac.addItem("Pernambuco");
+		ac.addItem("Piauí");
+		ac.addItem("Rio de Janeiro");
+		ac.addItem("Rio Grande do Norte");
+		ac.addItem("Rio Grande do Sul");
+		ac.addItem("Rondônia");
+		ac.addItem("Roraima");
+		ac.addItem("Santa Catarina");
+		ac.addItem("São Paulo");
+		ac.addItem("Sergipe");
+		ac.addItem("Tocantins");
+		ac.addItem("Distrito Federal");
 		
 		JLabel lblNewLabel_9 = new JLabel("Data de início:");
 		contentPane.add(lblNewLabel_9, "cell 4 7");

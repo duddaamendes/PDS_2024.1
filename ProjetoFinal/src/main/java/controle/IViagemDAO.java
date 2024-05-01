@@ -14,5 +14,4 @@ public interface IViagemDAO {
 
 	public boolean removerViagens(InfoViagem via);
 
-
 }
