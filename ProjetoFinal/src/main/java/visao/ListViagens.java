@@ -1,27 +1,17 @@
 package visao;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Insets;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.AbstractBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-
 import com.aspose.pdf.Document;
+import com.aspose.pdf.Image;
 import com.aspose.pdf.TextFragment;
-import com.aspose.pdf.internal.html.drawing.Page;
 
 import controle.ViagemDAO;
 import modelo.InfoViagem;
@@ -34,6 +24,7 @@ import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -206,6 +197,18 @@ public class ListViagens extends JFrame {
 		String dataTermino = vg.getDataTermino().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 		String orc = String.valueOf(vg.getOrcaomento());
 		
+        String caminhoImagem = "src\\main\\resources\\imgs\\LogoPdf.png"; 
+        Image img = new Image();
+        try (FileInputStream imageStream = new FileInputStream(caminhoImagem)) {
+            img.setImageStream(imageStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return; 
+        }
+        
+        pag.getParagraphs().add(img);
+        pag.getParagraphs().add(new TextFragment (" "));
+        pag.getParagraphs().add(new TextFragment (" "));
 		pag.getParagraphs().add(new TextFragment ("Viagem: "));
 		pag.getParagraphs().add(new TextFragment (" "));
 		pag.getParagraphs().add(new TextFragment (" "));
